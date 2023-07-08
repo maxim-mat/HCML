@@ -1,0 +1,2 @@
+class CheXpertClassifier(object):
+    pass
