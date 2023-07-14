@@ -1,2 +1,0 @@
-class CheXpertClassifier(object):
-    pass

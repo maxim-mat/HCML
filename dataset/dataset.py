@@ -63,7 +63,7 @@ class ImageDataset(Dataset):
         return self._num_image
 
     def __getitem__(self, idx):
-        image = cv2.imread(self._image_paths[idx], 0)
+        image = cv2.imread(str(self._image_paths[idx]), 0)
         image = Image.fromarray(image)
         if self._mode == 'train':
             image = GetTransforms(image, type=self.cfg.use_transforms_type)
@@ -71,7 +71,7 @@ class ImageDataset(Dataset):
         image = transform(image, self.cfg)
         labels = np.array(self._labels[idx]).astype(np.float32)
 
-        path = self._image_paths[idx]
+        path = str(self._image_paths[idx])
 
         if self._mode == 'train' or self._mode == 'dev':
             return image, labels

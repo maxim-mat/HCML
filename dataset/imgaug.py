@@ -12,7 +12,7 @@ def Common(image):
 def Aug(image):
     img_aug = tfs.Compose([
         tfs.RandomAffine(degrees=(-15, 15), translate=(0.05, 0.05),
-                         scale=(0.95, 1.05), fillcolor=128)
+                         scale=(0.95, 1.05), fill=128)
     ])
     image = img_aug(image)
 
@@ -20,7 +20,7 @@ def Aug(image):
 
 
 def GetTransforms(image, target=None, type='common'):
-    # taget is not support now
+    # target is not support now
     if target is not None:
         raise Exception(
             'Target is not support now ! ')
