@@ -16,16 +16,17 @@ import torch.nn.functional as F
 from torch.nn import DataParallel
 
 from tensorboardX import SummaryWriter
+from torchinfo import summary
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../')
 
 torch.manual_seed(0)
 torch.cuda.manual_seed_all(0)
 
-from data.dataset import ImageDataset  # noqa
-from model.classifier import Classifier  # noqa
-from utils.misc import lr_schedule  # noqa
-from model.utils import get_optimizer  # noqa
+from dataset.dataset import ImageDataset  # noqa
+from Classification.model.classifier import Classifier  # noqa
+from Classification.model.utils import lr_schedule  # noqa
+from Classification.model.utils import get_optimizer  # noqa
 
 parser = argparse.ArgumentParser(description='Train model')
 parser.add_argument('cfg_path', default=None, metavar='CFG_PATH', type=str,
@@ -298,12 +299,11 @@ def run(args):
 
     model = Classifier(cfg)
     if args.verbose is True:
-        from torchsummary import summary
         if cfg.fix_ratio:
             h, w = cfg.long_side, cfg.long_side
         else:
             h, w = cfg.height, cfg.width
-        summary(model.to(device), (3, h, w))
+        summary(model.to(device), (1, 3, h, w))
     model = DataParallel(model, device_ids=device_ids).to(device).train()
     if args.pre_train is not None:
         if os.path.exists(args.pre_train):
@@ -313,14 +313,15 @@ def run(args):
 
     src_folder = os.path.dirname(os.path.abspath(__file__)) + '/../'
     dst_folder = os.path.join(args.save_path, 'classification')
-    rc, size = subprocess.getstatusoutput('du --max-depth=0 %s | cut -f1'
-                                          % src_folder)
-    if rc != 0:
-        raise Exception('Copy folder error : {}'.format(rc))
-    rc, err_msg = subprocess.getstatusoutput('cp -R %s %s' % (src_folder,
-                                                              dst_folder))
-    if rc != 0:
-        raise Exception('copy folder error : {}'.format(err_msg))
+
+    # rc, size = subprocess.getstatusoutput('du --max-depth=0 %s | cut -f1'
+    #                                       % src_folder)
+    # if rc != 0:
+    #     raise Exception('Copy folder error : {}'.format(rc))
+    # rc, err_msg = subprocess.getstatusoutput('cp -R %s %s' % (src_folder,
+    #                                                           dst_folder))
+    # if rc != 0:
+    #     raise Exception('copy folder error : {}'.format(err_msg))
 
     copyfile(cfg.train_csv, os.path.join(args.save_path, 'train.csv'))
     copyfile(cfg.dev_csv, os.path.join(args.save_path, 'dev.csv'))

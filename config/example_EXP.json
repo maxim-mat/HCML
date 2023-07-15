@@ -1,6 +1,6 @@
 {
-    "train_csv": "/Path/to/train.csv",
-    "dev_csv": "/Path/to/dev.csv",
+    "train_csv": "D:/chexpert/chexpertchestxrays-u20210408/CheXpert-v1.0/train.csv",
+    "dev_csv": "D:/chexpert/chexpertchestxrays-u20210408/CheXpert-v1.0/valid.csv",
     "backbone": "densenet121",
     "width": 512,
     "height": 512,
