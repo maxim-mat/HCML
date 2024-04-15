@@ -1,0 +1,1 @@
+--num_workers 6 --device_ids "0" --pre_train "config/pre_train.pth" --logtofile "dev/classification/train_runs/run_0" ../config/example_EXP.json ../dev/classification/train_runs/run_0
